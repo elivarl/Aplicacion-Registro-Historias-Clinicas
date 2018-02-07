@@ -1,0 +1,177 @@
+CREATE DATABASE IF NOT EXISTS medicalcloud;
+
+USE medicalcloud;
+
+CREATE TABLE usuarios(
+	id INT (255) AUTO_INCREMENT NOT NULL,
+	alias VARCHAR(255),
+	nombres VARCHAR(255), 
+	apellidos VARCHAR(255), 
+	email VARCHAR(255), 
+	clave VARCHAR(255), 
+	pregunta VARCHAR(255), 
+	respuesta VARCHAR(255),
+	CONSTRAINT usuarios_uniquies_fields UNIQUE(email, alias),
+	CONSTRAINT pk_usuarios PRIMARY KEY(id)
+)ENGINE = InnoDb;
+
+CREATE TABLE PACIENTES(
+	id INT (255) AUTO_INCREMENT NOT NULL,  
+	cedula VARCHAR (255), 
+	nombres VARCHAR (255),
+	apellidos VARCHAR (255), 
+	ocupacion VARCHAR (255), 
+	estcivil VARCHAR (255),
+	genero VARCHAR (1), 
+	fnacimiento DATE,
+	email VARCHAR (255), 
+	tposangre VARCHAR (255), 
+	direccion VARCHAR (255), 
+	usuario INT (255),
+	CONSTRAINT pk_pacientes PRIMARY KEY(id),
+	CONSTRAINT fk_pacientes_usuarios FOREIGN KEY(usuario) REFERENCES usuarios (id)	
+) ENGINE = InnoDb;
+
+
+CREATE TABLE TELEFONOS(
+	id INT (255) AUTO_INCREMENT NOT NULL,  
+	numero INT (255), 
+	paciente INT (255),
+	CONSTRAINT pk_telefonos PRIMARY KEY(id),
+	CONSTRAINT fk_telefonos_paciente FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+CREATE TABLE HISTOCLINICAS(
+	id INT (255) AUTO_INCREMENT NOT NULL,  
+	fregistro DATE, 
+	numero VARCHAR (255),
+	paciente INT (255),
+	CONSTRAINT pk_histoclinicas PRIMARY KEY(id),
+	CONSTRAINT fk_histoclinicas_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+CREATE TABLE ANTFAMILIARES(
+	id INT (255) AUTO_INCREMENT NOT NULL,  
+	cardiopatia VARCHAR(1), 
+	diabetes VARCHAR(1),
+	cancer VARCHAR(1),
+	enfcardiovasculares VARCHAR(1),
+	hipertension VARCHAR(1),
+	enfmentales VARCHAR(1),
+	tubercolosis VARCHAR(1),
+	enfinfecciosas VARCHAR(1),
+	malformacion VARCHAR(1),
+	otra VARCHAR(1),
+	descripcion VARCHAR(255),
+	paciente INT (255),
+	CONSTRAINT pk_antfamiliares PRIMARY KEY(id),
+	CONSTRAINT fk_antfamiliares_pacientes FOREIGN KEY (paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+
+CREATE TABLE ANTPERSONALES(
+	id INT (255) AUTO_INCREMENT NOT NULL,  
+	imenarquia INT (12), 
+	imenopausia INT (12),
+	vsexualactiva VARCHAR(255),
+	ciclos INT (5),
+	gesta INT (5),
+	partos INT (5),
+	abortos INT (1),
+	cesareas INT (5),
+	fum DATE,
+	fup DATE,
+	hvivos INT (5),
+	mpf VARCHAR(255),
+	descripcion VARCHAR(255),
+	paciente INT (255),
+	CONSTRAINT pk_antpersonales PRIMARY KEY(id),
+	CONSTRAINT fk_antpersonales_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+CREATE TABLE EXAVISUALES(
+	id INT (255) AUTO_INCREMENT NOT NULL,   
+	descripcion VARCHAR(255),
+	paciente INT (255),
+	CONSTRAINT pk_exavisuales PRIMARY KEY(id),
+	CONSTRAINT fk_exavisuales_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+CREATE TABLE CONSULTAS (
+	id INT (255) AUTO_INCREMENT NOT NULL,   
+	fecha DATETIME,
+	enfactual VARCHAR (255),
+	diagnostico VARCHAR (255),
+	prescripcion VARCHAR (255),
+	paciente INT (255),
+	CONSTRAINT pk_consultas PRIMARY KEY(id),
+	CONSTRAINT fk_consultas_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+CREATE TABLE SISTEMAS(
+	id INT (255) AUTO_INCREMENT NOT NULL,  
+	fecha DATETIME,	
+	sentidos VARCHAR (1),
+	respiratorio VARCHAR (1),
+	cardiovascular VARCHAR (1),
+	nervioso VARCHAR (1),
+	genital VARCHAR (1),
+	digestivo VARCHAR (1),
+	urinario VARCHAR (1),
+	mesqueletico VARCHAR (1),
+	endocrino VARCHAR (1),
+	linfatico VARCHAR (1),
+	descripcion VARCHAR (255),
+	paciente INT (255),
+	CONSTRAINT pk_sistemas PRIMARY KEY(id),
+	CONSTRAINT fk_sistemas_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+CREATE TABLE RECETAS (
+	id INT (255) AUTO_INCREMENT NOT NULL,
+	fecha DATETIME,
+	medicamentos VARCHAR (255),	
+	indicaciones VARCHAR (255),
+	paciente INT (255),
+	CONSTRAINT pk_recetas PRIMARY KEY(id),
+	CONSTRAINT fk_recetas_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+
+CREATE TABLE EXACOMPLEMENTARIOS (
+	id INT (255) AUTO_INCREMENT NOT NULL,  
+	fecha DATETIME,
+	descripcion VARCHAR (255),
+	paciente INT (255),
+	CONSTRAINT pk_exacomplementarios PRIMARY KEY(id),
+	CONSTRAINT fk_exacomplementarios_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+
+CREATE TABLE EXAFISICOS (
+	id INT (255) AUTO_INCREMENT NOT NULL,
+	fecha DATETIME,
+	cabeza VARCHAR (255),
+	cuello VARCHAR (255),
+	torax VARCHAR (255),
+	abdomen VARCHAR (255),
+	miembros VARCHAR (255),
+	genitales VARCHAR (255),
+	paciente INT (255),
+	CONSTRAINT pk_exafisicos PRIMARY KEY(id),
+	CONSTRAINT fk_exafisicos_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
+
+
+CREATE TABLE SIGVITALES (
+	id INT (255) AUTO_INCREMENT NOT NULL,
+	fecha DATETIME,
+	prearterial DECIMAL (5, 2),
+	pulso DECIMAL (5, 2),
+	peso DECIMAL (5, 2),
+	talla DECIMAL (5, 2),
+	descripcion VARCHAR (255),
+	paciente INT (255),
+	CONSTRAINT pk_sigvitales PRIMARY KEY(id),
+	CONSTRAINT fk_sigvitales_pacientes FOREIGN KEY(paciente) REFERENCES pacientes (id)
+) ENGINE = InnoDb;
